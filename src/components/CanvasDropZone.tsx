@@ -1,7 +1,7 @@
 
 import React, { useRef } from 'react';
 import { useDesigner } from '@/contexts/DesignerContext';
-import { RenderComponent } from '@/components/RenderComponent';
+import RenderComponent from '@/components/RenderComponent';
 
 const CanvasDropZone = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -17,9 +17,9 @@ const CanvasDropZone = () => {
 
     const componentType = e.dataTransfer.getData('componentType');
     if (componentType) {
-      // Here you might want to adjust the addComponent function
-      // to accept x and y coordinates for positioning
-      addComponent({ type: componentType, x, y });
+      // Note: x,y positioning would need to be handled differently
+      // For now, just add the component without coordinates
+      addComponent({ type: componentType });
     }
   };
 
@@ -40,7 +40,7 @@ const CanvasDropZone = () => {
       }}
     >
       {components.map((component) => (
-        <RenderComponent key={component.id} component={component} />
+        <RenderComponent key={component.id} component={component} isSelected={false} />
       ))}
       {isDragging && draggedComponentType && (
         <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center text-violet-600 text-2xl font-bold bg-gradient-to-br from-violet-100/80 to-teal-100/80 backdrop-blur-sm border-2 border-dashed border-violet-400 rounded-lg animate-pulse">
