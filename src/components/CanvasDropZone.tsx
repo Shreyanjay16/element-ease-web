@@ -2,6 +2,7 @@
 import React, { useRef } from 'react';
 import { useDesigner } from '@/contexts/DesignerContext';
 import RenderComponent from '@/components/RenderComponent';
+import { getComponentDefinition } from '@/lib/components';
 
 const CanvasDropZone = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -17,9 +18,10 @@ const CanvasDropZone = () => {
 
     const componentType = e.dataTransfer.getData('componentType');
     if (componentType) {
-      // Note: x,y positioning would need to be handled differently
-      // For now, just add the component without coordinates
-      addComponent({ type: componentType });
+      const componentDef = getComponentDefinition(componentType);
+      if (componentDef) {
+        addComponent(componentDef);
+      }
     }
   };
 
