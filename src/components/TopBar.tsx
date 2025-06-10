@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useDesigner } from '@/contexts/DesignerContext';
 import { Button } from '@/components/ui/button';
@@ -226,3 +225,5 @@ const TopBar = () => {
 };
 
 export default TopBar;
+
+</initial_code>

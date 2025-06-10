@@ -16,16 +16,16 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 260 100% 60%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
+    --secondary: 200 100% 60%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
+    --accent: 130 50% 60%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -35,22 +35,22 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
-    --radius: 0.5rem;
+    --radius: 0.8rem;
 
-    --designer-blue: 220 100% 50%;
+    --designer-blue: 260 100% 60%;
     --designer-blue-foreground: 0 0% 100%;
-    --designer-blue-hover: 220 100% 45%;
+    --designer-blue-hover: 260 100% 65%;
 
-    --designer-panel: 220 20% 97%;
-    --designer-panel-foreground: 220 10% 20%;
-    --designer-panel-border: 220 13% 91%;
+    --designer-panel: 260 30% 97%;
+    --designer-panel-foreground: 260 30% 20%;
+    --designer-panel-border: 260 20% 90%;
 
     --designer-canvas: 0 0% 100%;
     --designer-canvas-grid: 220 10% 92%;
 
-    --designer-component-hover: 220 100% 50% / 0.1;
-    --designer-component-active: 220 100% 50% / 0.2;
-    --designer-component-border: 220 100% 50%;
+    --designer-component-hover: 260 100% 60% / 0.1;
+    --designer-component-active: 260 100% 60% / 0.2;
+    --designer-component-border: 260 100% 60%;
   }
 
   .dark {
@@ -63,16 +63,16 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
+    --primary: 260 80% 60%;
     --primary-foreground: 222.2 47.4% 11.2%;
 
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 200 80% 60%;
     --secondary-foreground: 210 40% 98%;
 
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 130 50% 60%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
@@ -82,20 +82,20 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
 
-    --designer-blue: 220 100% 60%;
+    --designer-blue: 260 80% 70%;
     --designer-blue-foreground: 0 0% 100%;
-    --designer-blue-hover: 220 100% 65%;
+    --designer-blue-hover: 260 70% 75%;
 
-    --designer-panel: 222 30% 10%;
-    --designer-panel-foreground: 210 40% 98%;
-    --designer-panel-border: 222 30% 15%;
+    --designer-panel: 260 30% 13%;
+    --designer-panel-foreground: 260 20% 90%;
+    --designer-panel-border: 260 30% 20%;
 
     --designer-canvas: 222.2 47.4% 11.2%;
     --designer-canvas-grid: 220 13% 18%;
 
-    --designer-component-hover: 220 100% 60% / 0.1;
-    --designer-component-active: 220 100% 60% / 0.2; 
-    --designer-component-border: 220 100% 60%;
+    --designer-component-hover: 260 80% 70% / 0.1;
+    --designer-component-active: 260 80% 70% / 0.2; 
+    --designer-component-border: 260 80% 70%;
   }
 }
 
@@ -115,5 +115,62 @@
     background-image: 
       linear-gradient(to right, hsl(var(--designer-canvas-grid)) 1px, transparent 1px),
       linear-gradient(to bottom, hsl(var(--designer-canvas-grid)) 1px, transparent 1px);
+  }
+
+  .animated-gradient {
+    background: linear-gradient(
+      45deg,
+      hsl(var(--primary) / 0.8),
+      hsl(var(--secondary) / 0.8),
+      hsl(var(--accent) / 0.8)
+    );
+    background-size: 300% 300%;
+    animation: gradient-shift 8s ease infinite;
+  }
+
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .bounce-in {
+    animation: bounce-in 0.5s ease;
+  }
+
+  @keyframes bounce-in {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    70% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
   }
 }

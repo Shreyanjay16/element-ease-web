@@ -1,210 +1,128 @@
-
 import React from 'react';
 import { useDesigner } from '@/contexts/DesignerContext';
 import { propertyGroups } from '@/lib/components';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Trash2Icon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 const PropertiesPanel = () => {
-  const { selectedComponent, updateComponent, removeComponent } = useDesigner();
+  const { selectedComponent, updateComponent } = useDesigner();
 
   if (!selectedComponent) {
     return (
-      <div className="bg-designer-panel border-l border-designer-panel-border h-full p-4">
-        <h2 className="text-lg font-semibold text-designer-panel-foreground">Properties</h2>
-        <p className="text-sm text-muted-foreground mt-4">Select a component to edit its properties</p>
+      <div className="p-4 text-sm text-muted-foreground">
+        Select a component to view and edit its properties.
       </div>
     );
   }
 
-  const handleStyleChange = (property: string, value: string) => {
-    const updatedStyles = { ...selectedComponent.styles, [property]: value };
-    updateComponent(selectedComponent.id, { styles: updatedStyles });
+  const handleChangeStyle = (styleName: string, value: string) => {
+    updateComponent(selectedComponent.id, {
+      styles: {
+        ...selectedComponent.styles,
+        [styleName]: value,
+      },
+    });
   };
 
-  const handleContentChange = (value: string) => {
+  const handleChangeContent = (value: string) => {
     updateComponent(selectedComponent.id, { content: value });
   };
 
-  const handleAttributeChange = (attribute: string, value: string) => {
-    const updatedAttributes = { ...(selectedComponent.attributes || {}), [attribute]: value };
-    updateComponent(selectedComponent.id, { attributes: updatedAttributes });
-  };
-
-  const handleDeleteComponent = () => {
-    removeComponent(selectedComponent.id);
+  const handleChangeAttribute = (attributeName: string, value: string) => {
+    updateComponent(selectedComponent.id, {
+      attributes: {
+        ...selectedComponent.attributes,
+        [attributeName]: value,
+      },
+    });
   };
 
   return (
-    <div className="bg-designer-panel border-l border-designer-panel-border h-full overflow-y-auto">
-      <div className="p-4 sticky top-0 bg-designer-panel z-10 border-b border-designer-panel-border flex justify-between items-center">
-        <h2 className="text-lg font-semibold text-designer-panel-foreground">{selectedComponent.name} Properties</h2>
-        <Button variant="ghost" size="icon" onClick={handleDeleteComponent} className="text-destructive">
-          <Trash2Icon className="w-5 h-5" />
-        </Button>
-      </div>
+    <div className="bg-designer-panel border-l border-designer-panel-border h-full overflow-y-auto p-4">
+      <h2 className="text-lg font-semibold text-designer-panel-foreground sticky top-0 bg-designer-panel z-10 pb-2 border-b border-designer-panel-border">
+        Properties
+      </h2>
 
-      <Tabs defaultValue="styles" className="px-4 py-3">
-        <TabsList className="grid w-full grid-cols-3 mb-4">
-          <TabsTrigger value="styles">Styles</TabsTrigger>
-          <TabsTrigger value="content">Content</TabsTrigger>
-          <TabsTrigger value="attributes">Attributes</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="styles" className="space-y-4">
-          <Accordion type="multiple">
-            {propertyGroups.map((group) => (
-              <AccordionItem key={group.name} value={group.name}>
-                <AccordionTrigger className="text-sm font-medium">{group.name}</AccordionTrigger>
-                <AccordionContent>
-                  <div className="space-y-3">
-                    {group.properties.map((property) => {
-                      const currentValue = selectedComponent.styles[property.name] || '';
+      {/* Content editing for text-based components */}
+      {['text', 'heading', 'button', 'link'].includes(selectedComponent.type) && (
+        <div className="mb-4">
+          <Label htmlFor="content" className="block text-sm font-medium text-designer-panel-foreground">
+            Content
+          </Label>
+          <Input
+            type="text"
+            id="content"
+            className="mt-1 p-2 w-full border rounded-md shadow-sm focus:ring focus:ring-designer-blue focus:border-designer-blue"
+            value={selectedComponent.content || ''}
+            onChange={(e) => handleChangeContent(e.target.value)}
+          />
+        </div>
+      )}
 
-                      switch (property.type) {
-                        case 'select':
-                          return (
-                            <div key={property.name} className="grid gap-2">
-                              <Label htmlFor={property.name} className="text-xs">{property.label}</Label>
-                              <Select
-                                value={currentValue}
-                                onValueChange={(value) => handleStyleChange(property.name, value)}
-                              >
-                                <SelectTrigger id={property.name} className="h-8">
-                                  <SelectValue placeholder={`Select ${property.label.toLowerCase()}`} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {property.options?.map((option) => (
-                                    <SelectItem key={option} value={option}>
-                                      {option}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
-                          );
-
-                        case 'color':
-                          return (
-                            <div key={property.name} className="grid gap-2">
-                              <Label htmlFor={property.name} className="text-xs">{property.label}</Label>
-                              <div className="flex gap-2">
-                                <Input
-                                  id={property.name}
-                                  type="text"
-                                  value={currentValue}
-                                  onChange={(e) => handleStyleChange(property.name, e.target.value)}
-                                  className="h-8"
-                                />
-                                <Input
-                                  type="color"
-                                  value={currentValue || '#000000'}
-                                  onChange={(e) => handleStyleChange(property.name, e.target.value)}
-                                  className="w-10 h-8 p-1"
-                                />
-                              </div>
-                            </div>
-                          );
-
-                        default:
-                          return (
-                            <div key={property.name} className="grid gap-2">
-                              <Label htmlFor={property.name} className="text-xs">{property.label}</Label>
-                              <Input
-                                id={property.name}
-                                type="text"
-                                value={currentValue}
-                                onChange={(e) => handleStyleChange(property.name, e.target.value)}
-                                className="h-8"
-                              />
-                            </div>
-                          );
-                      }
-                    })}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </TabsContent>
-        
-        <TabsContent value="content" className="space-y-4">
-          {['text', 'heading', 'button', 'link'].includes(selectedComponent.type) && (
-            <div className="grid gap-2">
-              <Label htmlFor="component-content" className="text-sm">Content</Label>
+      {/* Attribute editing for image and link components */}
+      {['image', 'link'].some(type => type === selectedComponent.type) && selectedComponent.attributes && (
+        <div className="mb-4">
+          <h3 className="text-md font-semibold text-designer-panel-foreground mb-2">Attributes</h3>
+          {Object.entries(selectedComponent.attributes).map(([key, value]) => (
+            <div key={key} className="mb-2">
+              <Label htmlFor={`attribute-${key}`} className="block text-sm font-medium text-designer-panel-foreground capitalize">
+                {key}
+              </Label>
               <Input
-                id="component-content"
-                value={selectedComponent.content || ''}
-                onChange={(e) => handleContentChange(e.target.value)}
+                type="text"
+                id={`attribute-${key}`}
+                className="mt-1 p-2 w-full border rounded-md shadow-sm focus:ring focus:ring-designer-blue focus:border-designer-blue"
+                value={value || ''}
+                onChange={(e) => handleChangeAttribute(key, e.target.value)}
               />
             </div>
-          )}
-          
-          {!['text', 'heading', 'button', 'link'].includes(selectedComponent.type) && (
-            <p className="text-sm text-muted-foreground">This component type does not have editable content.</p>
-          )}
-        </TabsContent>
-        
-        <TabsContent value="attributes" className="space-y-4">
-          {selectedComponent.type === 'image' && (
-            <>
-              <div className="grid gap-2">
-                <Label htmlFor="src" className="text-sm">Image Source (URL)</Label>
-                <Input
-                  id="src"
-                  value={selectedComponent.attributes?.src || ''}
-                  onChange={(e) => handleAttributeChange('src', e.target.value)}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="alt" className="text-sm">Alt Text</Label>
-                <Input
-                  id="alt"
-                  value={selectedComponent.attributes?.alt || ''}
-                  onChange={(e) => handleAttributeChange('alt', e.target.value)}
-                />
-              </div>
-            </>
-          )}
-          
-          {selectedComponent.type === 'link' && (
-            <>
-              <div className="grid gap-2">
-                <Label htmlFor="href" className="text-sm">Link URL</Label>
-                <Input
-                  id="href"
-                  value={selectedComponent.attributes?.href || ''}
-                  onChange={(e) => handleAttributeChange('href', e.target.value)}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="target" className="text-sm">Target</Label>
-                <Select
-                  value={selectedComponent.attributes?.target || '_blank'}
-                  onValueChange={(value) => handleAttributeChange('target', value)}
+          ))}
+        </div>
+      )}
+
+      {/* Style editing */}
+      {propertyGroups.map((group) => (
+        <div key={group.name} className="mb-6">
+          <h3 className="text-md font-semibold text-designer-panel-foreground mb-2">{group.name}</h3>
+          {group.properties.map((prop) => (
+            <div key={prop.name} className="mb-2">
+              <Label htmlFor={prop.name} className="block text-sm font-medium text-designer-panel-foreground capitalize">
+                {prop.label}
+              </Label>
+              {prop.type === 'select' ? (
+                <select
+                  id={prop.name}
+                  className="mt-1 p-2 w-full border rounded-md shadow-sm focus:ring focus:ring-designer-blue focus:border-designer-blue"
+                  value={selectedComponent.styles?.[prop.name] || ''}
+                  onChange={(e) => handleChangeStyle(prop.name, e.target.value)}
                 >
-                  <SelectTrigger id="target">
-                    <SelectValue placeholder="Select target" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="_blank">New Window (_blank)</SelectItem>
-                    <SelectItem value="_self">Same Window (_self)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </>
-          )}
-          
-          {!['image', 'link'].includes(selectedComponent.type) && (
-            <p className="text-sm text-muted-foreground">This component type does not have editable attributes.</p>
-          )}
-        </TabsContent>
-      </Tabs>
+                  {prop.options?.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              ) : prop.type === 'color' ? (
+                <Input
+                  type="color"
+                  id={prop.name}
+                  className="mt-1 p-2 w-full border rounded-md shadow-sm focus:ring focus:ring-designer-blue focus:border-designer-blue"
+                  value={selectedComponent.styles?.[prop.name] || ''}
+                  onChange={(e) => handleChangeStyle(prop.name, e.target.value)}
+                />
+              ) : (
+                <Input
+                  type="text"
+                  id={prop.name}
+                  className="mt-1 p-2 w-full border rounded-md shadow-sm focus:ring focus:ring-designer-blue focus:border-designer-blue"
+                  value={selectedComponent.styles?.[prop.name] || ''}
+                  onChange={(e) => handleChangeStyle(prop.name, e.target.value)}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   );
 };
