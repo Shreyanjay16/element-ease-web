@@ -17,10 +17,15 @@ const CanvasDropZone = () => {
     const y = e.clientY - rect.top;
 
     const componentType = e.dataTransfer.getData('componentType');
+    console.log('Dropped component type:', componentType);
+    
     if (componentType) {
       const componentDef = getComponentDefinition(componentType);
       if (componentDef) {
+        console.log('Adding component:', componentDef);
         addComponent(componentDef);
+      } else {
+        console.error('Component definition not found for type:', componentType);
       }
     }
   }, [addComponent]);
@@ -35,11 +40,6 @@ const CanvasDropZone = () => {
       className="flex-1 h-full p-4 bg-designer-canvas grid-pattern overflow-auto relative transition-all duration-300 hover:bg-gradient-to-br hover:from-designer-canvas hover:to-violet-50/20"
       onDrop={handleDrop}
       onDragOver={handleDragOver}
-      style={{
-        opacity: isDragging ? 0.7 : 1,
-        pointerEvents: isDragging ? 'none' : 'auto',
-        transform: isDragging ? 'scale(0.98)' : 'scale(1)',
-      }}
     >
       {components.map((component) => (
         <RenderComponent key={component.id} component={component} isSelected={false} />

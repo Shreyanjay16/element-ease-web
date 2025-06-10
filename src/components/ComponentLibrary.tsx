@@ -28,6 +28,7 @@ const ComponentLibrary = () => {
 
   // Handle drag start
   const handleDragStart = useCallback((e: React.DragEvent, componentType: string) => {
+    console.log('Drag started:', componentType);
     e.dataTransfer.setData('componentType', componentType);
     setIsDragging(true);
     setDraggedComponentType(componentType);
@@ -35,12 +36,14 @@ const ComponentLibrary = () => {
 
   // Handle drag end
   const handleDragEnd = useCallback(() => {
+    console.log('Drag ended');
     setIsDragging(false);
     setDraggedComponentType(null);
   }, [setIsDragging, setDraggedComponentType]);
 
   // Handle double click to add component
   const handleDoubleClick = useCallback((componentType: string) => {
+    console.log('Double clicked:', componentType);
     const componentDef = defaultComponents.find(c => c.type === componentType);
     if (componentDef) {
       addComponent(componentDef);
@@ -60,7 +63,7 @@ const ComponentLibrary = () => {
         {defaultComponents.map((component, index) => (
           <div
             key={component.type}
-            draggable
+            draggable={true}
             onDragStart={(e) => handleDragStart(e, component.type)}
             onDragEnd={handleDragEnd}
             onDoubleClick={() => handleDoubleClick(component.type)}
