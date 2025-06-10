@@ -1,5 +1,5 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useCallback } from 'react';
 import { useDesigner } from '@/contexts/DesignerContext';
 import RenderComponent from '@/components/RenderComponent';
 import { getComponentDefinition } from '@/lib/components';
@@ -8,7 +8,7 @@ const CanvasDropZone = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
   const { components, addComponent, isDragging, draggedComponentType } = useDesigner();
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     if (!canvasRef.current) return;
 
@@ -23,11 +23,11 @@ const CanvasDropZone = () => {
         addComponent(componentDef);
       }
     }
-  };
+  }, [addComponent]);
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
-  };
+  }, []);
 
   return (
     <div

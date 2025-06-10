@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { defaultComponents } from '@/lib/components';
 import { useDesigner } from '@/contexts/DesignerContext';
 import { 
@@ -11,7 +11,7 @@ import {
 const ComponentLibrary = () => {
   const { setIsDragging, setDraggedComponentType, addComponent } = useDesigner();
   
-  const getIconComponent = (iconName: string) => {
+  const getIconComponent = useCallback((iconName: string) => {
     switch (iconName) {
       case 'layout': return <LayoutIcon className="w-5 h-5" />;
       case 'type': return <TypeIcon className="w-5 h-5" />;
@@ -24,28 +24,28 @@ const ComponentLibrary = () => {
       case 'layout-align-middle': return <AlignCenterIcon className="w-5 h-5" />;
       default: return <SquareIcon className="w-5 h-5" />;
     }
-  };
+  }, []);
 
   // Handle drag start
-  const handleDragStart = (e: React.DragEvent, componentType: string) => {
+  const handleDragStart = useCallback((e: React.DragEvent, componentType: string) => {
     e.dataTransfer.setData('componentType', componentType);
     setIsDragging(true);
     setDraggedComponentType(componentType);
-  };
+  }, [setIsDragging, setDraggedComponentType]);
 
   // Handle drag end
-  const handleDragEnd = () => {
+  const handleDragEnd = useCallback(() => {
     setIsDragging(false);
     setDraggedComponentType(null);
-  };
+  }, [setIsDragging, setDraggedComponentType]);
 
   // Handle double click to add component
-  const handleDoubleClick = (componentType: string) => {
+  const handleDoubleClick = useCallback((componentType: string) => {
     const componentDef = defaultComponents.find(c => c.type === componentType);
     if (componentDef) {
       addComponent(componentDef);
     }
-  };
+  }, [addComponent]);
 
   return (
     <div className="bg-designer-panel border-r border-designer-panel-border h-full overflow-y-auto pb-4">

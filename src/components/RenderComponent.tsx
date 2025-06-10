@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useDesigner } from '@/contexts/DesignerContext';
 import { ComponentBase } from '@/types/designer';
 
@@ -9,18 +9,20 @@ interface RenderComponentProps {
 }
 
 const RenderComponent = ({ component, isSelected }: RenderComponentProps) => {
-  const { setSelectedComponent, removeComponent } = useDesigner();
+  const { setSelectedComponent, removeComponent, selectedComponent } = useDesigner();
 
-  const handleClick = (e: React.MouseEvent) => {
+  const isCurrentlySelected = selectedComponent?.id === component.id;
+
+  const handleClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     setSelectedComponent(component);
-  };
+  }, [component, setSelectedComponent]);
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (isSelected && e.key === 'Delete') {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (isCurrentlySelected && e.key === 'Delete') {
       removeComponent(component.id);
     }
-  };
+  }, [isCurrentlySelected, component.id, removeComponent]);
 
   // Render based on component type
   const renderContent = () => {
@@ -92,13 +94,13 @@ const RenderComponent = ({ component, isSelected }: RenderComponentProps) => {
 
   return (
     <div
-      className={`relative ${isSelected ? 'outline outline-2 outline-designer-component-border' : 'hover:outline hover:outline-1 hover:outline-designer-component-border'}`}
+      className={`relative ${isCurrentlySelected ? 'outline outline-2 outline-designer-component-border' : 'hover:outline hover:outline-1 hover:outline-designer-component-border'}`}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       tabIndex={0}
     >
       {renderContent()}
-      {isSelected && (
+      {isCurrentlySelected && (
         <div className="absolute -top-6 right-0 bg-designer-blue text-xs text-white px-2 py-1 rounded-t-md">
           {component.name}
         </div>
