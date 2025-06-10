@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Viewport, ComponentBase, ComponentDefinition, Project } from '@/types/designer';
@@ -18,6 +17,7 @@ interface DesignerContextType {
   setCurrentProject: (project: Project | null) => void;
   saveProject: () => void;
   createNewProject: (name: string) => void;
+  loadProject: (project: Project) => void;
   isDragging: boolean;
   setIsDragging: (isDragging: boolean) => void;
   draggedComponentType: string | null;
@@ -130,6 +130,12 @@ export const DesignerProvider = ({ children }: DesignerProviderProps) => {
     toast.success(`Created new project: ${name}`);
   };
 
+  const loadProject = (project: Project) => {
+    setCurrentProject(project);
+    setComponents(project.components);
+    setSelectedComponent(null);
+  };
+
   const value = {
     selectedComponent,
     setSelectedComponent,
@@ -143,6 +149,7 @@ export const DesignerProvider = ({ children }: DesignerProviderProps) => {
     setCurrentProject,
     saveProject,
     createNewProject,
+    loadProject,
     isDragging,
     setIsDragging,
     draggedComponentType,
@@ -155,3 +162,5 @@ export const DesignerProvider = ({ children }: DesignerProviderProps) => {
     </DesignerContext.Provider>
   );
 };
+
+export default DesignerProvider;
