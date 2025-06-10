@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useDesigner } from '@/contexts/DesignerContext';
 import { Button } from '@/components/ui/button';
@@ -81,17 +82,19 @@ const TopBar = () => {
   };
 
   return (
-    <header className="border-b border-border bg-background p-3">
+    <header className="border-b border-border bg-gradient-to-r from-violet-600 via-teal-500 to-emerald-600 p-3 shadow-lg">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <h1 className="text-xl font-semibold mr-6">WebCanvas</h1>
+          <h1 className="text-2xl font-bold mr-6 text-white drop-shadow-md">
+            ✨ WebCanvas Studio
+          </h1>
           
           <div className="flex items-center space-x-2">
             <Button 
               variant="outline" 
               size="sm" 
               onClick={() => setIsNewProjectModalOpen(true)} 
-              className="flex items-center"
+              className="flex items-center bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 hover:scale-105 transition-all duration-200"
             >
               <PlusIcon className="w-4 h-4 mr-1" />
               New
@@ -102,7 +105,7 @@ const TopBar = () => {
               size="sm" 
               onClick={saveProject} 
               disabled={!currentProject}
-              className="flex items-center"
+              className="flex items-center bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 hover:scale-105 transition-all duration-200 disabled:opacity-50"
             >
               <SaveIcon className="w-4 h-4 mr-1" />
               Save
@@ -116,14 +119,14 @@ const TopBar = () => {
             onValueChange={(value) => setViewport(value as 'desktop' | 'tablet' | 'mobile')}
             className="mr-4"
           >
-            <TabsList>
-              <TabsTrigger value="desktop" className="flex items-center">
+            <TabsList className="bg-white/20 backdrop-blur-sm border-white/30">
+              <TabsTrigger value="desktop" className="flex items-center text-white data-[state=active]:bg-white data-[state=active]:text-violet-600">
                 <LayoutIcon className="w-4 h-4 mr-1" /> Desktop
               </TabsTrigger>
-              <TabsTrigger value="tablet" className="flex items-center">
+              <TabsTrigger value="tablet" className="flex items-center text-white data-[state=active]:bg-white data-[state=active]:text-violet-600">
                 <TabletIcon className="w-4 h-4 mr-1" /> Tablet
               </TabsTrigger>
-              <TabsTrigger value="mobile" className="flex items-center">
+              <TabsTrigger value="mobile" className="flex items-center text-white data-[state=active]:bg-white data-[state=active]:text-violet-600">
                 <SmartphoneIcon className="w-4 h-4 mr-1" /> Mobile
               </TabsTrigger>
             </TabsList>
@@ -133,7 +136,7 @@ const TopBar = () => {
             variant="outline" 
             onClick={() => setIsCodeModalOpen(true)}
             disabled={components.length === 0}
-            className="flex items-center"
+            className="flex items-center bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 hover:scale-105 transition-all duration-200"
           >
             <CodeIcon className="w-4 h-4 mr-1" />
             Code
@@ -144,13 +147,13 @@ const TopBar = () => {
               <Button 
                 variant="outline"
                 disabled={components.length === 0}
-                className="flex items-center"
+                className="flex items-center bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 hover:scale-105 transition-all duration-200"
               >
                 <DownloadIcon className="w-4 h-4 mr-1" />
                 Export
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="bg-white/95 backdrop-blur-sm">
               <DropdownMenuItem onClick={handleExportHTML}>
                 Export as HTML
               </DropdownMenuItem>
@@ -225,5 +228,3 @@ const TopBar = () => {
 };
 
 export default TopBar;
-
-</initial_code>
