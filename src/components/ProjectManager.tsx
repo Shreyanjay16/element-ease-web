@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useDesigner } from '@/contexts/DesignerContext';
 import { Project } from '@/types/designer';
@@ -12,7 +11,7 @@ import { FolderOpenIcon, TrashIcon } from 'lucide-react';
 const ProjectManager = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const { setCurrentProject, setComponents } = useDesigner();
+  const { setCurrentProject, loadProject } = useDesigner();
 
   useEffect(() => {
     // Load projects from localStorage
@@ -22,7 +21,7 @@ const ProjectManager = () => {
 
   const handleLoadProject = (project: Project) => {
     setCurrentProject(project);
-    setComponents(project.components);
+    loadProject(project);
     setIsOpen(false);
     toast.success(`Loaded project: ${project.name}`);
   };

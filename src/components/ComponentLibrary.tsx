@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { defaultComponents } from '@/lib/components';
 import { useDesigner } from '@/contexts/DesignerContext';
 import { 
   LayoutIcon, TypeIcon, HeadingIcon, SquareIcon, ImageIcon, 
-  LinkIcon, MinusIcon, LayoutGridIcon, LayoutAlignMiddleIcon 
+  LinkIcon, MinusIcon, LayoutGridIcon, AlignCenterIcon 
 } from 'lucide-react';
 
 const ComponentLibrary = () => {
@@ -20,7 +19,7 @@ const ComponentLibrary = () => {
       case 'link': return <LinkIcon className="w-5 h-5" />;
       case 'minus': return <MinusIcon className="w-5 h-5" />;
       case 'layout-grid': return <LayoutGridIcon className="w-5 h-5" />;
-      case 'layout-align-middle': return <LayoutAlignMiddleIcon className="w-5 h-5" />;
+      case 'layout-align-middle': return <AlignCenterIcon className="w-5 h-5" />;
       default: return <SquareIcon className="w-5 h-5" />;
     }
   };
