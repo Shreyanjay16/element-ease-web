@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, ReactNode, useCallback } from 'react';
+import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Viewport, ComponentBase, ComponentDefinition, Project } from '@/types/designer';
 import { defaultComponents } from '@/lib/components';
@@ -46,8 +46,7 @@ export const DesignerProvider = ({ children }: DesignerProviderProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [draggedComponentType, setDraggedComponentType] = useState<string | null>(null);
 
-  const addComponent = useCallback((componentDef: ComponentDefinition) => {
-    console.log('DesignerContext: Adding component', componentDef);
+  const addComponent = (componentDef: ComponentDefinition) => {
     const newComponent: ComponentBase = {
       id: uuidv4(),
       type: componentDef.type,
@@ -64,7 +63,7 @@ export const DesignerProvider = ({ children }: DesignerProviderProps) => {
     setComponents(prev => [...prev, newComponent]);
     setSelectedComponent(newComponent);
     toast.success(`Added ${componentDef.name} component`);
-  }, []);
+  };
 
   const updateComponent = (id: string, updates: Partial<ComponentBase>) => {
     setComponents(prev => 
@@ -165,5 +164,3 @@ export const DesignerProvider = ({ children }: DesignerProviderProps) => {
 };
 
 export default DesignerProvider;
-
-}
