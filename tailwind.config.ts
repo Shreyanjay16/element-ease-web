@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,6 +53,27 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				designer: {
+					blue: {
+						DEFAULT: 'hsl(var(--designer-blue))',
+						foreground: 'hsl(var(--designer-blue-foreground))',
+						hover: 'hsl(var(--designer-blue-hover))',
+					},
+					panel: {
+						DEFAULT: 'hsl(var(--designer-panel))',
+						foreground: 'hsl(var(--designer-panel-foreground))',
+						border: 'hsl(var(--designer-panel-border))',
+					},
+					canvas: {
+						DEFAULT: 'hsl(var(--designer-canvas))',
+						grid: 'hsl(var(--designer-canvas-grid))',
+					},
+					component: {
+						hover: 'hsl(var(--designer-component-hover))',
+						active: 'hsl(var(--designer-component-active))',
+						border: 'hsl(var(--designer-component-border))',
+					}
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -84,11 +106,20 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					from: {
+						opacity: '0'
+					},
+					to: {
+						opacity: '1'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.3s ease-out'
 			}
 		}
 	},
